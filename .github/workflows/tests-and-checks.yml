@@ -36,6 +36,9 @@ jobs:
           pyright
         continue-on-error: true
 
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
       - name: Tests with pytest
         run: |
           poetry run pytest tests
