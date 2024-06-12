@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "nor-reward-distribution-bot"
+version = "1.0.0"
+description = ""
+authors = ["F4ever <raman.s@lido.fi>"]
+license = "GPL 3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+web3 = "^6.19.0"
+prometheus-client = "^0.20.0"
+requests = "^2.32.3"
+web3-multi-provider = "^0.6.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+pyright = "^1.1.366"
+ruff = "^0.4.8"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src",
+  "tests",
+]
+markers = [
+    "unit",  # offline
+    "integration",  # anvil fork
+]
+
+[tool.ruff]
+line-length = 140
+
+[tool.ruff.lint]
+extend-select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+docstring-code-format = true
