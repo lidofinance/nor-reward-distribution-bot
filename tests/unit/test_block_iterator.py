@@ -11,14 +11,14 @@ pytestmark = pytest.mark.unit
 
 
 @pytest.mark.parametrize(
-    ("expected_exception", "result"),
+    ('expected_exception', 'result'),
     [
-        (None, "ignore"),
-        (TimeoutManagerError, "raise"),
-        (NoActiveProviderError, "raise"),
-        (Exception, "ignore"),
-        (ValueError, "ignore"),
-    ]
+        (None, 'ignore'),
+        (TimeoutManagerError, 'raise'),
+        (NoActiveProviderError, 'raise'),
+        (Exception, 'ignore'),
+        (ValueError, 'ignore'),
+    ],
 )
 def test_exception_handler(expected_exception, result):
     @exception_handler
@@ -28,7 +28,7 @@ def test_exception_handler(expected_exception, result):
 
         raise exc
 
-    if result == "raise":
+    if result == 'raise':
         with pytest.raises(expected_exception):
             func(expected_exception)
     else:
@@ -49,7 +49,7 @@ def cycle_handler(web3_unit, request):
 
 def test_execute_as_daemon(cycle_handler):
     def cycle():
-        call_count = getattr(cycle, "call_count", 0)
+        call_count = getattr(cycle, 'call_count', 0)
         cycle.call_count = call_count + 1  # type: ignore
 
         if call_count == 5:

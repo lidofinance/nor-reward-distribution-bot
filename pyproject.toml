@@ -38,6 +38,7 @@ markers = [
 line-length = 140
 
 [tool.ruff.lint]
+fixable = ["ALL"]
 extend-select = [
     # pycodestyle
     "E",

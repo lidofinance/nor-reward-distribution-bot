@@ -1,4 +1,3 @@
-
 import variables
 from bots.distributor import RewardLiquidationBot
 from contracts.extention import LidoContracts
@@ -14,15 +13,15 @@ logger = logging.getLogger(__name__)
 
 
 if __name__ == '__main__':
-    logger.info({"msg": "Start Reward distribution bot."})
+    logger.info({'msg': 'Start Reward distribution bot.'})
 
-    logger.info({"msg": f"Start up healthcheck service on port: {variables.HEALTHCHECK_SERVER_PORT}."})
+    logger.info({'msg': f'Start up healthcheck service on port: {variables.HEALTHCHECK_SERVER_PORT}.'})
     start_pulse_server(variables.HEALTHCHECK_SERVER_PORT)
 
-    logger.info({"msg": f"Start up metrics service on port: {variables.PROMETHEUS_PORT}."})
+    logger.info({'msg': f'Start up metrics service on port: {variables.PROMETHEUS_PORT}.'})
     start_http_server(variables.PROMETHEUS_PORT)
 
-    logger.info({"msg": "Connect MultiProvider."})
+    logger.info({'msg': 'Connect MultiProvider.'})
     web3 = Web3(MultiProvider(variables.WEB3_RPC_ENDPOINTS))
 
     add_requests_metric_middleware(web3)

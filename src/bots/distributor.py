@@ -48,10 +48,12 @@ class RewardLiquidationBot:
             logger.warning({'msg': 'Account is not provided. Dry mode.'})
             return
 
-        tx = transaction.build_transaction({
-            "from": variables.ACCOUNT.address,
-            "nonce": self.w3.eth.get_transaction_count(variables.ACCOUNT.address),
-        })
+        tx = transaction.build_transaction(
+            {
+                'from': variables.ACCOUNT.address,
+                'nonce': self.w3.eth.get_transaction_count(variables.ACCOUNT.address),
+            }
+        )
 
         signed_tx = self.w3.eth.account.sign_transaction(tx, variables.ACCOUNT.key)
 
