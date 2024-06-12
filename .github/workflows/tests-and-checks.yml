@@ -44,5 +44,4 @@ jobs:
           poetry run pytest tests
         env:
           WEB3_RPC_ENDPOINTS: ${{ secrets.WEB3_RPC_ENDPOINT }}
-          NODE_OPERATOR_REGISTRY_ADDRESS: "0x595F64Ddc3856a3b5Ff4f4CC1d1fb4B46cFd2bAC"
-
+          NODE_OPERATOR_REGISTRY_ADDRESS: "0xE12ABf35fA6f69C97Cc0AcF67B38D3000435790e"
