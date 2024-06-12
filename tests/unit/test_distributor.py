@@ -2,11 +2,9 @@ import logging
 from unittest.mock import Mock
 
 import pytest
-from web3.types import BlockData
-
 from bots.distributor import RewardLiquidationBot
 from contracts.node_operator_registry import RewardDistributionState
-
+from web3.types import BlockData
 
 pytestmark = pytest.mark.unit
 
@@ -34,7 +32,9 @@ def test_contract_not_ready_to_distribute(distributor, caplog):
     distributor.w3.lido.node_operator_registry.get_contract_version = Mock(return_value=3)
     distributor._send_transaction = Mock()
 
-    distributor.w3.lido.node_operator_registry.get_reward_distribution_state = Mock(return_value=RewardDistributionState.TRANSFERRED_TO_MODULE)
+    distributor.w3.lido.node_operator_registry.get_reward_distribution_state = Mock(
+        return_value=RewardDistributionState.TRANSFERRED_TO_MODULE,
+    )
     distributor.execute(BlockData())
     assert 'NOR is not ready to distribute rewards.' in caplog.messages[0]
 
@@ -46,21 +46,18 @@ def test_contract_not_ready_to_distribute(distributor, caplog):
 
 
 def test_dry_mode(distributor, caplog):
-    distributor.w3.lido.node_operator_registry.get_contract_version = Mock(return_value=3)
-    distributor.w3.lido.node_operator_registry.get_reward_distribution_state = Mock(return_value=RewardDistributionState.READY_FOR_DISTRIBUTION)
-    distributor._send_transaction = Mock()
-
-    distributor.execute(BlockData())
+    distributor._send_transaction(Mock())
 
     assert 'Account is not provided. Dry mode.' in caplog.messages[0]
-    distributor._send_transaction.assert_not_called()
 
 
 def test_execute(distributor, set_account):
     distributor._send_transaction = Mock()
 
     distributor.w3.lido.node_operator_registry.get_contract_version = Mock(return_value=3)
-    distributor.w3.lido.node_operator_registry.get_reward_distribution_state = Mock(return_value=RewardDistributionState.READY_FOR_DISTRIBUTION)
+    distributor.w3.lido.node_operator_registry.get_reward_distribution_state = Mock(
+        return_value=RewardDistributionState.READY_FOR_DISTRIBUTION,
+    )
 
     distributor.execute(BlockData())
 

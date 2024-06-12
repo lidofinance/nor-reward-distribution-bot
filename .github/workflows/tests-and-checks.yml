@@ -36,6 +36,10 @@ jobs:
           pyright
         continue-on-error: true
 
-      - name: Unit tests with pytest
+      - name: Tests with pytest
         run: |
-          poetry run pytest tests -m unit
+          poetry run pytest tests
+        env:
+          WEB3_RPC_ENDPOINTS: ${{ secrets.WEB3_RPC_ENDPOINT }}
+          NODE_OPERATOR_REGISTRY_ADDRESS: "0x595F64Ddc3856a3b5Ff4f4CC1d1fb4B46cFd2bAC"
+

@@ -1,12 +1,12 @@
 import logging
-from typing import Callable
+from typing import Any, Callable
 
 from contracts.interface import ContractInterface
 
 
 def check_contract(
     contract: ContractInterface,
-    functions_spec: list[tuple[str, tuple | None, Callable[[...], None]]],
+    functions_spec: list[tuple[str, tuple | None, Callable[[Any], None]]],
     caplog,
 ):
     caplog.set_level(logging.INFO)

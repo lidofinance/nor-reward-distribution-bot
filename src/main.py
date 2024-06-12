@@ -1,4 +1,5 @@
 
+import variables
 from bots.distributor import RewardLiquidationBot
 from contracts.extention import LidoContracts
 from metrics.healthcheck import start_pulse_server
@@ -8,8 +9,6 @@ from prometheus_client import start_http_server
 from services.block_iterator import CycleHandler
 from web3_multi_provider import MultiProvider
 from web3_types import Web3
-
-import variables
 
 logger = logging.getLogger(__name__)
 

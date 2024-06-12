@@ -1,16 +1,15 @@
 import logging
-from functools import wraps
 import time
-from typing import Callable
+from functools import wraps
+from typing import Any, Callable
 
+import variables
 from metrics.healthcheck import pulse
 from metrics.metrics import ACCOUNT_BALANCE, LATEST_BLOCK_NUMBER, UNEXPECTED_EXCEPTIONS
 from utils.timeout import TimeoutManager, TimeoutManagerError
 from web3 import Web3
 from web3.types import BlockData
 from web3_multi_provider import NoActiveProviderError
-
-import variables
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +38,7 @@ class CycleHandler:
     def __init__(
         self,
         w3: Web3,
-        function: Callable[[BlockData], None],
+        function: Callable[[BlockData], Any],
         blocks_between_execution: int,
         cycle_max_lifetime_in_seconds: int,
     ):
