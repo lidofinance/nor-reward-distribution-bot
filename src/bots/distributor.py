@@ -1,13 +1,12 @@
 import logging
 from typing import TYPE_CHECKING
 
-from web3.contract.contract import ContractFunction
-from web3.exceptions import ContractLogicError
-
 import variables
 from contracts.node_operator_registry import RewardDistributionState
 from metrics.metrics import REWARDS_DISTRIBUTION_STATUS
-from web3.types import BlockData, TxParams, Wei
+from web3.contract.contract import ContractFunction
+from web3.exceptions import ContractLogicError
+from web3.types import BlockData
 
 if TYPE_CHECKING:
     from web3_types import Web3
@@ -34,10 +33,6 @@ class RewardLiquidationBot:
 
         tx = self.w3.lido.node_operator_registry.distribute_reward()
 
-        if not variables.ACCOUNT:
-            logger.warning({'msg': 'Account is not provided. Dry mode.'})
-            return
-
         return self._send_transaction(tx)
 
     def _send_transaction(self, transaction: ContractFunction):
@@ -49,10 +44,16 @@ class RewardLiquidationBot:
 
         logger.info({'msg': 'Success local call. Send tx...'})
 
-        tx = transaction.build_transaction({
-            "from": variables.ACCOUNT.address,
-            "nonce": self.w3.eth.get_transaction_count(variables.ACCOUNT.address),
-        })
+        if not variables.ACCOUNT:
+            logger.warning({'msg': 'Account is not provided. Dry mode.'})
+            return
+
+        tx = transaction.build_transaction(
+            {
+                'from': variables.ACCOUNT.address,
+                'nonce': self.w3.eth.get_transaction_count(variables.ACCOUNT.address),
+            }
+        )
 
         signed_tx = self.w3.eth.account.sign_transaction(tx, variables.ACCOUNT.key)
 

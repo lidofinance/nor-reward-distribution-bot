@@ -1,7 +1,6 @@
 from unittest.mock import Mock
 
 import pytest
-
 from web3_types import Web3
 
 

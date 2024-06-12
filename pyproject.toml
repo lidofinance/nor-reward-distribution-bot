@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "nor-reward-distribution-bot"
 version = "1.0.0"
-description = ""
+description = "Permissionless reward distribution bot for Lido Node Operator Registry staking module."
 authors = ["F4ever <raman.s@lido.fi>"]
 license = "GPL 3.0"
 readme = "README.md"
+include = ["LICENSE"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -37,6 +38,7 @@ markers = [
 line-length = 140
 
 [tool.ruff.lint]
+fixable = ["ALL"]
 extend-select = [
     # pycodestyle
     "E",
@@ -56,3 +58,9 @@ extend-select = [
 quote-style = "single"
 indent-style = "space"
 docstring-code-format = true
+
+[tool.pyright]
+include = ["src"]
+executionEnvironments = [
+  { root = "tests", extraPaths=["src", "tests"] }
+]

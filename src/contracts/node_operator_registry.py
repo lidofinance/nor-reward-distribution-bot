@@ -1,10 +1,9 @@
 import logging
 from enum import Enum
 
-from web3.contract.contract import ContractFunction
-
 from contracts.interface import ContractInterface
 from eth_typing import BlockIdentifier
+from web3.contract.contract import ContractFunction
 
 logger = logging.getLogger(__name__)
 
@@ -20,11 +19,13 @@ class NodeOperatorRegistryContract(ContractInterface):
 
     def get_contract_version(self, block_identifier: BlockIdentifier = 'latest') -> int:
         result = self.functions.getContractVersion().call(block_identifier=block_identifier)
-        logger.info({
-            'msg': 'Call `getContractVersion()`.',
-            'value': result,
-            'block_identifier': repr(block_identifier),
-        })
+        logger.info(
+            {
+                'msg': 'Call `getContractVersion()`.',
+                'value': result,
+                'block_identifier': repr(block_identifier),
+            }
+        )
         return result
 
     def get_reward_distribution_state(self, block_identifier: BlockIdentifier = 'latest') -> RewardDistributionState:
@@ -34,11 +35,13 @@ class NodeOperatorRegistryContract(ContractInterface):
         """
         call = self.functions.getRewardDistributionState().call(block_identifier=block_identifier)
         result = RewardDistributionState(call)
-        logger.info({
-            'msg': 'Call `getRewardDistributionState()`.',
-            'value': repr(result),
-            'block_identifier': repr(block_identifier),
-        })
+        logger.info(
+            {
+                'msg': 'Call `getRewardDistributionState()`.',
+                'value': repr(result),
+                'block_identifier': repr(block_identifier),
+            }
+        )
         return result
 
     def distribute_reward(self) -> ContractFunction:
@@ -47,7 +50,5 @@ class NodeOperatorRegistryContract(ContractInterface):
         based on the latest accounting report.
         """
         tx = self.functions.distributeReward()
-        logger.info({
-            'msg': 'Build `distributeReward()` tx.'
-        })
+        logger.info({'msg': 'Build `distributeReward()` tx.'})
         return tx

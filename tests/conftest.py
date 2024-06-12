@@ -1,10 +1,9 @@
+import time
 from unittest.mock import Mock
 
 import pytest
-from web3 import Account
-import time
-
 import variables
+from web3 import Account
 
 
 @pytest.fixture

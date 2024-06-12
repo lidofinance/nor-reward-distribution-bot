@@ -1,16 +1,15 @@
 import os
-
-import pytest
-from web3 import HTTPProvider
-
-import variables
-from contracts.extention import LidoContracts
-from web3_types import Web3
 import subprocess
 import time
 
+import pytest
+import variables
+from contracts.extention import LidoContracts
+from web3 import HTTPProvider
+from web3_types import Web3
 
-@pytest.fixture(scope="module")
+
+@pytest.fixture(scope='module')
 def web3_integration(request):
     block_num = getattr(request, 'param', None)
 

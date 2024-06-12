@@ -1,9 +1,8 @@
 import pytest
-from web3.types import BlockData
-
 import variables
 from bots.distributor import RewardLiquidationBot
 from contracts.node_operator_registry import RewardDistributionState
+from web3.types import BlockData
 
 
 @pytest.mark.integration
@@ -13,7 +12,7 @@ from contracts.node_operator_registry import RewardDistributionState
     indirect=True,
 )
 def test_happy_path_distribution(web3_integration, set_account):
-    web3_integration.provider.make_request('anvil_setBalance', [variables.ACCOUNT.address, '0x500000000000000000000000'])
+    web3_integration.provider.make_request('anvil_setBalance', [variables.ACCOUNT.address, '0x500000000000000000000000'])  # type: ignore
 
     rlb = RewardLiquidationBot(web3_integration)
 

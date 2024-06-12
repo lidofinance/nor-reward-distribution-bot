@@ -1,8 +1,8 @@
 import pytest
+from contracts.node_operator_registry import RewardDistributionState
 from web3.contract.contract import ContractFunction
 
-from contracts.node_operator_registry import RewardDistributionState
-from tests.integration.contracts.contract import check_contract, check_value_type
+from .contract import check_contract, check_value_type
 
 
 @pytest.mark.integration

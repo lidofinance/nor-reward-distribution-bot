@@ -1,11 +1,10 @@
 import logging
 from typing import cast
 
+import variables
 from contracts.node_operator_registry import NodeOperatorRegistryContract
 from web3 import Web3
 from web3.module import Module
-
-import variables
 
 logger = logging.getLogger(__name__)
 

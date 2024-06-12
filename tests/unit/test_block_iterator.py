@@ -2,25 +2,23 @@ import time
 from unittest.mock import Mock
 
 import pytest
+from services.block_iterator import CycleHandler, exception_handler
+from utils.timeout import TimeoutManagerError
 from web3.types import BlockData
 from web3_multi_provider import NoActiveProviderError
-
-from services.block_iterator import exception_handler, CycleHandler
-from utils.timeout import TimeoutManagerError
-
 
 pytestmark = pytest.mark.unit
 
 
 @pytest.mark.parametrize(
-    ("expected_exception", "result"),
+    ('expected_exception', 'result'),
     [
-        (None, "ignore"),
-        (TimeoutManagerError, "raise"),
-        (NoActiveProviderError, "raise"),
-        (Exception, "ignore"),
-        (ValueError, "ignore"),
-    ]
+        (None, 'ignore'),
+        (TimeoutManagerError, 'raise'),
+        (NoActiveProviderError, 'raise'),
+        (Exception, 'ignore'),
+        (ValueError, 'ignore'),
+    ],
 )
 def test_exception_handler(expected_exception, result):
     @exception_handler
@@ -30,7 +28,7 @@ def test_exception_handler(expected_exception, result):
 
         raise exc
 
-    if result is "raise":
+    if result == 'raise':
         with pytest.raises(expected_exception):
             func(expected_exception)
     else:
@@ -51,18 +49,18 @@ def cycle_handler(web3_unit, request):
 
 def test_execute_as_daemon(cycle_handler):
     def cycle():
-        call_count = getattr(cycle, "call_count", 0)
-        setattr(cycle, "call_count", call_count + 1)
+        call_count = getattr(cycle, 'call_count', 0)
+        cycle.call_count = call_count + 1  # type: ignore
 
         if call_count == 5:
-            raise Exception
+            raise StopIteration
 
     cycle_handler._wait_for_new_block_and_execute = cycle
 
-    with pytest.raises(Exception):
+    with pytest.raises(StopIteration):
         cycle_handler.execute_as_daemon()
 
-    assert getattr(cycle, "call_count") == 6
+    assert cycle.call_count == 6  # type: ignore
 
 
 def test_wait_for_new_block_and_execute(cycle_handler, set_account):
@@ -79,7 +77,7 @@ def test_wait_for_new_block_and_execute(cycle_handler, set_account):
 def test_wait_until_next_block(cycle_handler, mock_sleep):
     cycle_handler._blocks_between_execution = 2
     cycle_handler._next_expected_block_number = 5
-    cycle_handler.w3.eth.get_block = Mock(side_effect=[BlockData(number=0), BlockData(number=5)])
+    cycle_handler.w3.eth.get_block = Mock(side_effect=[BlockData(number=0), BlockData(number=5)])  # type: ignore
 
     cycle_handler._wait_until_next_block()
 
