@@ -1,4 +1,4 @@
-# <img src="https://docs.lido.fi/img/logo.svg" alt="Lido" width="46"/> Lido Depositor bot
+# <img src="https://docs.lido.fi/img/logo.svg" alt="Lido" width="46"/>  Permissionless reward distributor
 
 ## Overview
 
