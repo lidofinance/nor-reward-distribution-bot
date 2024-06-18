@@ -28,8 +28,8 @@ anyone can initiate the reward distribution to allocate rewards among Node Opera
 ### Install
 
 ```bash
-git clone git@github.com:lidofinance/depositor-bot.git
-cd depositor-bot
+git clone git@github.com:lidofinance/nor-reward-distribution-bot.git
+cd nor-reward-distribution-bot
 poetry install
 ```
 
