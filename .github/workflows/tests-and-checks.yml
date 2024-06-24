@@ -28,12 +28,12 @@ jobs:
 
       - name: Format with Ruff
         run: |
-          ruff --output-format=github .
+          poetry run ruff --output-format=github .
         continue-on-error: true
 
       - name: Typecheck with Pyright
         run: |
-          pyright
+          poetry run ruff pyright
         continue-on-error: true
 
       - name: Install Foundry
