@@ -16,10 +16,10 @@ def test_happy_path_distribution(web3_integration, set_account):
 
     rlb = RewardLiquidationBot(web3_integration)
 
-    assert web3_integration.lido.node_operator_registry.get_reward_distribution_state() == RewardDistributionState.READY_FOR_DISTRIBUTION
+    assert web3_integration.lido.nor_contracts[0].get_reward_distribution_state() == RewardDistributionState.READY_FOR_DISTRIBUTION
 
     tx_hash = rlb.execute(BlockData())
 
-    assert web3_integration.lido.node_operator_registry.get_reward_distribution_state() == RewardDistributionState.DISTRIBUTED
+    assert web3_integration.lido.nor_contracts[0].get_reward_distribution_state() == RewardDistributionState.DISTRIBUTED
 
     assert web3_integration.eth.get_transaction_receipt(tx_hash)

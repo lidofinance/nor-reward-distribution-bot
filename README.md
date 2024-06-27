@@ -53,7 +53,7 @@ To run integration tests install Anvil.
 
 Run integration tests on Holesky testnet fork:
 ```bash
-export NODE_OPERATOR_REGISTRY_ADDRESS=0xE12ABf35fA6f69C97Cc0AcF67B38D3000435790e
+export NODE_OPERATOR_REGISTRY_ADDRESSES=0xE12ABf35fA6f69C97Cc0AcF67B38D3000435790e
 export WEB3_RPC_ENDPOINTS=https://holesky.infura.io/v3/<key>
 
 poetry run pytest tests -m integration
@@ -100,11 +100,11 @@ Alerts list:
 
 ### Required
 
-| Variable                       | Default                                    | Description                                                                                                           |
-|--------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| WEB3_RPC_ENDPOINTS             | -                                          | List of rpc endpoints that will be used to send requests (comma separated)                                            |
-| WALLET_PRIVATE_KEY             | -                                          | Account private key                                                                                                   |
-| NODE_OPERATOR_REGISTRY_ADDRESS | 0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5 | Lido Node Operator Registry module address. Addresses could be found [here](https://docs.lido.fi/deployed-contracts/) |
+| Variable                         | Default                                    | Description                                                                                                                                               |
+|----------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| WEB3_RPC_ENDPOINTS               | -                                          | List of rpc endpoints that will be used to send requests (comma separated)                                                                                |
+| WALLET_PRIVATE_KEY               | -                                          | Account private key                                                                                                                                       |
+| NODE_OPERATOR_REGISTRY_ADDRESSES | 0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5 | Lido Node Operator Registry module address (or based on it). Addresses could be found [here](https://docs.lido.fi/deployed-contracts/). Separate with `,` |
 
 ### Optional
 

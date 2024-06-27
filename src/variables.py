@@ -16,7 +16,7 @@ else:
     logger.warning({'msg': 'Account is not provided. Dry mode.'})
 
 
-NODE_OPERATOR_REGISTRY_ADDRESS = os.environ['NODE_OPERATOR_REGISTRY_ADDRESS']
+NODE_OPERATOR_REGISTRY_ADDRESSES = os.environ['NODE_OPERATOR_REGISTRY_ADDRESSES'].split(',')
 
 WEB3_RPC_ENDPOINTS = os.environ['WEB3_RPC_ENDPOINTS'].split(',')
 

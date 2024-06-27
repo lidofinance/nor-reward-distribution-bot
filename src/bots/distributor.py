@@ -19,21 +19,21 @@ class RewardLiquidationBot:
         self.w3 = w3
 
     def execute(self, block: BlockData):
-        if self.w3.lido.node_operator_registry.get_contract_version() in [1, 2]:
-            logger.warning({'msg': 'Contract does not support reward distribution yet. Waiting for V3.'})
-            return
+        for nor in self.w3.lido.nor_contracts:
+            if nor.get_contract_version() in [1, 2]:
+                logger.warning({'msg': 'Contract does not support reward distribution yet. Waiting for V3.'})
+                return
 
-        state = self.w3.lido.node_operator_registry.get_reward_distribution_state()
+            state = nor.get_reward_distribution_state()
 
-        REWARDS_DISTRIBUTION_STATUS.set(state.value)
+            REWARDS_DISTRIBUTION_STATUS.set(state.value)
 
-        if state is not RewardDistributionState.READY_FOR_DISTRIBUTION:
-            logger.info({'msg': 'NOR is not ready to distribute rewards.'})
-            return
+            if state is not RewardDistributionState.READY_FOR_DISTRIBUTION:
+                logger.info({'msg': 'NOR is not ready to distribute rewards.'})
+                return
 
-        tx = self.w3.lido.node_operator_registry.distribute_reward()
-
-        return self._send_transaction(tx)
+            tx = nor.distribute_reward()
+            self._send_transaction(tx)
 
     def _send_transaction(self, transaction: ContractFunction):
         try:

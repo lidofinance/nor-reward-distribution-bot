@@ -15,10 +15,12 @@ class LidoContracts(Module):
         self._load_contracts()
 
     def _load_contracts(self):
-        self.node_operator_registry = cast(
-            NodeOperatorRegistryContract,
-            self.w3.eth.contract(
-                address=self.w3.to_checksum_address(variables.NODE_OPERATOR_REGISTRY_ADDRESS),
-                ContractFactoryClass=NodeOperatorRegistryContract,
-            ),
-        )
+        self.nor_contracts: list[NodeOperatorRegistryContract] = [
+            cast(
+                NodeOperatorRegistryContract,
+                self.w3.eth.contract(
+                    address=self.w3.to_checksum_address(address),
+                    ContractFactoryClass=NodeOperatorRegistryContract,
+                ),
+            ) for address in variables.NODE_OPERATOR_REGISTRY_ADDRESSES
+        ]
