@@ -8,6 +8,7 @@ ACCOUNT_BALANCE = Gauge('account_balance', 'Account balance', namespace=PREFIX)
 REWARDS_DISTRIBUTION_STATUS = Gauge(
     'rewards_distribution_status',
     'Current smart contract distribution state.',
+    ['address'],
     namespace=PREFIX,
 )
 

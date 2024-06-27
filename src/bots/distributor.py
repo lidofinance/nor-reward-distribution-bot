@@ -22,15 +22,15 @@ class RewardLiquidationBot:
         for nor in self.w3.lido.nor_contracts:
             if nor.get_contract_version() in [1, 2]:
                 logger.warning({'msg': 'Contract does not support reward distribution yet. Waiting for V3.'})
-                return
+                continue
 
             state = nor.get_reward_distribution_state()
 
-            REWARDS_DISTRIBUTION_STATUS.set(state.value)
+            REWARDS_DISTRIBUTION_STATUS.labels(nor.address).set(state.value)
 
             if state is not RewardDistributionState.READY_FOR_DISTRIBUTION:
                 logger.info({'msg': 'NOR is not ready to distribute rewards.'})
-                return
+                continue
 
             tx = nor.distribute_reward()
             self._send_transaction(tx)
@@ -58,7 +58,7 @@ class RewardLiquidationBot:
         signed_tx = self.w3.eth.account.sign_transaction(tx, variables.ACCOUNT.key)
 
         tx_hash = self.w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-        logger.info({'msg': 'Transaction sent.', 'value': tx_hash})
+        logger.info({'msg': 'Transaction sent.', 'value': repr(tx_hash)})
 
         self.w3.eth.wait_for_transaction_receipt(tx_hash)
         logger.info({'msg': 'Transaction found in blockchain.'})
