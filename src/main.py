@@ -9,6 +9,7 @@ from services.block_iterator import CycleHandler
 from web3_multi_provider import MultiProvider
 from web3_types import Web3
 
+
 logger = logging.getLogger(__name__)
 
 
