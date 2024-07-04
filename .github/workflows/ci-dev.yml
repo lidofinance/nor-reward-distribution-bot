@@ -22,4 +22,4 @@ jobs:
           APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
           TARGET_REPO: "lidofinance/infra-mainnet"
           TARGET: "develop"
-          TARGET_WORKFLOW: "deploy_holesky_testnet_nor_reward_distribution_bot.yaml"
+          TARGET_WORKFLOW: "deploy_testnet_nor_reward_distribution_bot.yaml"
