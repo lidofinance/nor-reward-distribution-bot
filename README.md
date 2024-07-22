@@ -44,7 +44,7 @@ poetry run python src/main.py
 #### Run unit tests
 
 ```bash
-poetry run pytest tests -m unit
+NODE_OPERATOR_REGISTRY_ADDRESSES='' WEB3_RPC_ENDPOINTS='' poetry run pytest tests -m unit
 ```
 
 #### Run integration tests.
