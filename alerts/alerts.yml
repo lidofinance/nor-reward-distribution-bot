@@ -4,39 +4,37 @@ groups:
       - alert: DistributionBotUnexpectedErrors
         expr: increase(distribution_bot_unexpected_exceptions{service="nor-reward-distribution-bot"}[1h]) > 0
         labels:
-          severity: critical
+          severity: major
           app_team: tooling
         annotations:
           summary: "Distribution bot got an unexpected exception."
-          description: "Unexpected exception has happened."
+          description: "Unexpected exception has happened {{ $labels.address }} : {{ $value }}."
   - name: Distribution bot. Account balance.
     rules:
       - alert: DistributionBotLowAccountBalance
         expr: distribution_bot_account_balance{service="nor-reward-distribution-bot"}/10^18 < 0.5
-        for: 15m
         labels:
-          severity: warning
+          severity: minor
           app_team: tooling
         annotations:
           summary: "Low account balance for distribution bot {{ $value }} ETH."
   - name: Distribution bot. Distributions.
     rules:
-      - alert: DistributionBotLowDistributions
+      - alert: DistributionBotNoDistributions
         expr: max_over_time(distribution_bot_rewards_distribution_status[15m]) != 2
         for: 15m
         labels:
-          severity: critical
+          severity: major
           app_team: tooling
         annotations:
           summary: "Distributor bot didn't distribute anything in 15 minutes."
-          description: "Distributor bot stuck distributing."
+          description: "Distributor bot stuck distributing {{ $labels.address }}."
   - name: Distribution bot. Head is stale.
     rules:
       - alert: DistributionBotStaleHeadBlock
         expr: changes(distribution_bot_latest_block_number[15m]) == 0
-        for: 15m
         labels:
-          severity: critical
+          severity: major
           app_team: tooling
         annotations:
           summary: "Head block hasn't been updated for 15 minutes."
@@ -45,7 +43,7 @@ groups:
     rules:
       - alert: DistributionBotHighELNodeLatency
         expr: histogram_quantile(0.95, sum(rate(distribution_bot_eth_rpc_requests_duration_bucket[5m])) by (le)) > 0.5
-        for: 15m
+        for: 4m
         labels:
           severity: critical
           app_team: tooling

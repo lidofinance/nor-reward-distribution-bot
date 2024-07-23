@@ -96,6 +96,8 @@ Alerts list:
 | nor_distributor_unexpected_errors | Unexpected errors. Check logs for details |
 | nor_distributor_el_high_latency   | Issues with EL node                       |
 
+Run alerts tests with: `promtool test rules alerts/alerts.tests.yml`
+
 ## Variables
 
 ### Required
