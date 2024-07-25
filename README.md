@@ -2,9 +2,9 @@
 
 ## Overview
 
-Permissionless reward distribution bot for Lido staking module. 
-Operates with [Node Operator Registry](https://docs.lido.fi/contracts/node-operators-registry) smart contract. 
-After [Accounting Oracle](https://docs.lido.fi/guides/oracle-spec/accounting-oracle) completes the third phase, 
+Permissionless reward distribution bot for Lido staking module.
+Operates with [Node Operator Registry](https://docs.lido.fi/contracts/node-operators-registry) smart contract.
+After [Accounting Oracle](https://docs.lido.fi/guides/oracle-spec/accounting-oracle) completes the third phase,
 anyone can initiate the reward distribution to allocate rewards among Node Operators in the Staking Module.
 
 ## Table of Contents
@@ -12,15 +12,15 @@ anyone can initiate the reward distribution to allocate rewards among Node Opera
 - [Description](#overview)
 - [Table of Contents](#table-of-contents)
 - [Development](#getting-started)
-  - [Install](#install)
-  - [Tests](#tests)
-  - [Release flow](#release-flow)
+    - [Install](#install)
+    - [Tests](#tests)
+    - [Release flow](#release-flow)
 - [Monitoring](#monitoring)
-  - [Metrics](#metrics)
-  - [Alerts](#alerts)
+    - [Metrics](#metrics)
+    - [Alerts](#alerts)
 - [Variables](#variables)
-  - [Required variables](#required)
-  - [Additional variables](#optional)
+    - [Required variables](#required)
+    - [Additional variables](#optional)
 - [Licence](#licence)
 
 ## Getting started
@@ -52,6 +52,7 @@ NODE_OPERATOR_REGISTRY_ADDRESSES='' WEB3_RPC_ENDPOINTS='' poetry run pytest test
 To run integration tests install Anvil.
 
 Run integration tests on Holesky testnet fork:
+
 ```bash
 export NODE_OPERATOR_REGISTRY_ADDRESSES=0xE12ABf35fA6f69C97Cc0AcF67B38D3000435790e
 export WEB3_RPC_ENDPOINTS=https://holesky.infura.io/v3/<key>
@@ -59,7 +60,8 @@ export WEB3_RPC_ENDPOINTS=https://holesky.infura.io/v3/<key>
 poetry run pytest tests -m integration
 ```
 
-In case of "command not found: anvil" error, provide `ANVIL_PATH` variable 
+In case of "command not found: anvil" error, provide `ANVIL_PATH` variable
+
 ```bash
 export ANVIL_PATH='pathto/anvil'
 ```
@@ -84,17 +86,17 @@ Prometheus server hosted on `http://localhost:${{PROMETHEUS_PORT}}/`.
 ### Alerts
 
 Integrated with Alertmanager and Prometheus to provide real-time alerts based on predefined metrics.  
-Alerts source code could be found [here](alerts). 
+Alerts source code could be found [here](alerts).
 
 Alerts list:
 
-| Name                              | Description                               |
-|-----------------------------------|-------------------------------------------|
-| nor_distributor_low_balance       | Account balance is low                    |
-| nor_distributor_outdated_head     | Block head didn't update for a while      |
-| nor_distributor_no_distribution   | No reward distribution for a while        |
-| nor_distributor_unexpected_errors | Unexpected errors. Check logs for details |
-| nor_distributor_el_high_latency   | Issues with EL node                       |
+| Name                             | Description                               |
+|----------------------------------|-------------------------------------------|
+| DistributionBotLowAccountBalance | Account balance is low                    |
+| DistributionBotStaleHeadBlock    | Block head didn't update for a while      |
+| DistributionBotNoDistributions   | No reward distribution for a while        |
+| DistributionBotUnexpectedErrors  | Unexpected errors. Check logs for details |
+| DistributionBotHighELNodeLatency | Issues with EL node                       |
 
 Run alerts tests with: `promtool test rules alerts/alerts.tests.yml`
 
@@ -110,10 +112,10 @@ Run alerts tests with: `promtool test rules alerts/alerts.tests.yml`
 
 ### Optional
 
-| Variable                          | Default    | Description                                                                                                              |
-|-----------------------------------|------------|--------------------------------------------------------------------------------------------------------------------------|
-| PROMETHEUS_PORT                   | 9000       | Port with metrics server                                                                                                 |
-| HEALTHCHECK_SERVER_PORT           | 9010       | Port with bot`s status server                                                                                            |
+| Variable                | Default | Description                   |
+|-------------------------|---------|-------------------------------|
+| PROMETHEUS_PORT         | 9000    | Port with metrics server      |
+| HEALTHCHECK_SERVER_PORT | 9010    | Port with bot`s status server |
 
 ## License
 
