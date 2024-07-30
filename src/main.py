@@ -11,14 +11,16 @@ from web3_types import Web3
 
 logger = logging.getLogger(__name__)
 
-
 if __name__ == '__main__':
     logger.info({'msg': 'Start Reward distribution bot.'})
+    logger.info(
+        {
+            'msg': 'Bot env variables',
+            'value': variables.PUBLIC_ENV_VARS,
+        }
+    )
 
-    logger.info({'msg': f'Start up healthcheck service on port: {variables.HEALTHCHECK_SERVER_PORT}.'})
     start_pulse_server(variables.HEALTHCHECK_SERVER_PORT)
-
-    logger.info({'msg': f'Start up metrics service on port: {variables.PROMETHEUS_PORT}.'})
     start_http_server(variables.PROMETHEUS_PORT)
 
     logger.info({'msg': 'Connect MultiProvider.'})

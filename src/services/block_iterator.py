@@ -57,7 +57,7 @@ class CycleHandler:
         pulse(variables.HEALTHCHECK_SERVER_PORT)
         if variables.ACCOUNT:
             balance = self.w3.eth.get_balance(variables.ACCOUNT.address)
-            ACCOUNT_BALANCE.set(balance)
+            ACCOUNT_BALANCE.labels(variables.ACCOUNT.address).set(balance)
 
         latest_block = self._wait_until_next_block()
         self._execute_function(latest_block)

@@ -1,0 +1,127 @@
+rule_files:
+  - "alerts.yml"
+
+tests:
+  - interval: 1h
+    input_series:
+      - series: 'distribution_bot_unexpected_exceptions{service="nor-reward-distribution-bot", address="0x123"}'
+        values: '0 1 2'
+      - series: 'distribution_bot_unexpected_exceptions{service="nor-reward-distribution-bot", address="0x456"}'
+        values: '0 0 0'
+    alert_rule_test:
+      - eval_time: 1h
+        alertname: DistributionBotUnexpectedErrors
+        exp_alerts:
+          - exp_labels:
+              severity: major
+              app_team: tooling
+              alertname: DistributionBotUnexpectedErrors
+              service: nor-reward-distribution-bot
+              address: "0x123"
+            exp_annotations:
+              summary: "Distribution bot got an unexpected exception."
+              description: "Unexpected exception has happened 0x123 : 1."
+
+      - eval_time: 2h
+        alertname: DistributionBotUnexpectedErrors
+        exp_alerts:
+          - exp_labels:
+              severity: major
+              app_team: tooling
+              alertname: DistributionBotUnexpectedErrors
+              service: nor-reward-distribution-bot
+              address: "0x123"
+            exp_annotations:
+              summary: "Distribution bot got an unexpected exception."
+              description: "Unexpected exception has happened 0x123 : 1."
+
+      - eval_time: 3h
+        alertname: DistributionBotUnexpectedErrors
+        exp_alerts: []
+  - interval: 1h
+    input_series:
+      - series: 'distribution_bot_account_balance{service="nor-reward-distribution-bot"}'
+        values: '5e17 4e17 1e18'
+    alert_rule_test:
+      - eval_time: 30m
+        alertname: DistributionBotLowAccountBalance
+        exp_alerts: []
+
+      - eval_time: 1h
+        alertname: DistributionBotLowAccountBalance
+        exp_alerts:
+          - exp_labels:
+              severity: minor
+              app_team: tooling
+              alertname: DistributionBotLowAccountBalance
+              service: nor-reward-distribution-bot
+            exp_annotations:
+              summary: "Low account balance for distribution bot 0.4 ETH."
+
+      - eval_time: 2h
+        alertname: DistributionBotLowAccountBalance
+        exp_alerts: []
+  - interval: 1m
+    input_series:
+      - series: 'distribution_bot_rewards_distribution_status{address="0x123"}'
+        values: '0 0 0 1 1 1'
+      - series: 'distribution_bot_rewards_distribution_status{address="0x456"}'
+        values: '2 2 2 2 2 2'
+    alert_rule_test:
+      - eval_time: 16m
+        alertname: DistributionBotNoDistributions
+        exp_alerts:
+          - exp_labels:
+              severity: major
+              app_team: tooling
+              alertname: DistributionBotNoDistributions
+              address: "0x123"
+            exp_annotations:
+              summary: "Distributor bot didn't distribute anything in 15 minutes."
+              description: "Distributor bot stuck distributing 0x123."
+  - interval: 1m
+    input_series:
+      - series: 'distribution_bot_latest_block_number{service="nor-reward-distribution-bot"}'
+        values: '1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
+    alert_rule_test:
+      - eval_time: 15m
+        alertname: DistributionBotStaleHeadBlock
+        exp_alerts:
+          - exp_labels:
+              severity: major
+              app_team: tooling
+              alertname: DistributionBotStaleHeadBlock
+              service: nor-reward-distribution-bot
+            exp_annotations:
+              summary: "Head block hasn't been updated for 15 minutes."
+              description: "Distributor bot stuck."
+  - interval: 1m
+    input_series:
+      - series: 'distribution_bot_eth_rpc_requests_duration_bucket{le="0.1"}'
+        values: 80 160 240 320 400 480 560 660 720 800
+      - series: 'distribution_bot_eth_rpc_requests_duration_bucket{le="2"}'
+        values: 90 180 270 360 450 540 630 720 810 900
+      - series: 'distribution_bot_eth_rpc_requests_duration_bucket{le="+Inf"}'
+        values: 100 200 300 400 500 600 700 800 900 1000
+    alert_rule_test:
+      - eval_time: 9m
+        alertname: DistributionBotHighELNodeLatency
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+              app_team: tooling
+              alertname: DistributionBotHighELNodeLatency
+            exp_annotations:
+              summary: "Latency for EL node is greater than 0.5 seconds."
+  - interval: 1m
+    input_series:
+      - series: 'distribution_bot_eth_rpc_requests_duration_bucket{le="0.5"}'
+        values: '1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
+      - series: 'distribution_bot_eth_rpc_requests_duration_bucket{le="1.0"}'
+        values: '1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
+      - series: 'distribution_bot_eth_rpc_requests_duration_bucket{le="+Inf"}'
+        values: '1 1 1 1 1 1 1 1 1 1 1 1 1 1 1'
+    alert_rule_test:
+      - eval_time: 15m
+        alertname: DistributionBotHighELNodeLatency
+        exp_alerts: []
