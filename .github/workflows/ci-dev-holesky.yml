@@ -1,10 +1,10 @@
-name: CI Dev Hoodi
+name: CI Dev Holesky
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - develop
+      - holesky
     paths-ignore:
       - ".github/**"
 
