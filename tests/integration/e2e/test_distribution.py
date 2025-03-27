@@ -8,7 +8,7 @@ from web3.types import BlockData
 @pytest.mark.integration
 @pytest.mark.parametrize(
     'web3_integration',
-    [1716865],
+    [22131097],
     indirect=True,
 )
 def test_happy_path_distribution(web3_integration, set_account):
