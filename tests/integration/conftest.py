@@ -20,6 +20,10 @@ def web3_integration(request):
     ):
         w3 = Web3(HTTPProvider('http://127.0.0.1:8545', request_kwargs={'timeout': 120}))
         w3.attach_modules({'lido': LidoContracts})
+
+        # Check it's mainnet
+        assert w3.eth.chain_id == 1
+
         yield w3
 
 

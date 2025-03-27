@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
@@ -28,12 +28,12 @@ jobs:
 
       - name: Format with Ruff
         run: |
-          poetry run ruff --output-format=github .
+          poetry run ruff check --output-format=github .
         continue-on-error: true
 
       - name: Typecheck with Pyright
         run: |
-          poetry run ruff pyright
+          poetry run pyright .
         continue-on-error: true
 
       - name: Install Foundry
@@ -44,4 +44,4 @@ jobs:
           poetry run pytest tests
         env:
           WEB3_RPC_ENDPOINTS: ${{ secrets.WEB3_RPC_ENDPOINT }}
-          NODE_OPERATOR_REGISTRY_ADDRESSES: "0xE12ABf35fA6f69C97Cc0AcF67B38D3000435790e"
+          NODE_OPERATOR_REGISTRY_ADDRESSES: "0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5"
