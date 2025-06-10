@@ -11,7 +11,7 @@ include = ["LICENSE"]
 python = "^3.12"
 web3 = "^6.19.0"
 prometheus-client = "^0.20.0"
-requests = "^2.32.3"
+requests = "^2.32.4"
 web3-multi-provider = "^0.6.0"
 
 
