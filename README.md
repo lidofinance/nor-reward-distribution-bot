@@ -109,6 +109,7 @@ Run alerts tests with: `promtool test rules alerts/alerts.tests.yml`
 | WEB3_RPC_ENDPOINTS               | -                                          | List of rpc endpoints that will be used to send requests (comma separated)                                                                                |
 | WALLET_PRIVATE_KEY               | -                                          | Account private key                                                                                                                                       |
 | NODE_OPERATOR_REGISTRY_ADDRESSES | 0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5 | Lido Node Operator Registry module address (or based on it). Addresses could be found [here](https://docs.lido.fi/deployed-contracts/). Separate with `,` |
+| BLOCKS_BETWEEN_EXECUTION         | 1                                          | Number of blocks between bot executions                                                                                                                   |                                                                                                                   
 
 ### Optional
 
