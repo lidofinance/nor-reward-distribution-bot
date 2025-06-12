@@ -34,7 +34,7 @@ if __name__ == '__main__':
     ch = CycleHandler(
         web3,
         bot.execute,
-        32,
+        variables.BLOCKS_BETWEEN_EXECUTION,
         120,
     )
     ch.execute_as_daemon()
