@@ -1,5 +1,4 @@
 from prometheus_client.metrics import Counter, Gauge, Histogram, Info
-
 from variables import PUBLIC_ENV_VARS
 
 PREFIX = 'distribution_bot'
