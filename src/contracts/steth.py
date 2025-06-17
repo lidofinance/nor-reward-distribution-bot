@@ -1,9 +1,7 @@
 import logging
-from enum import Enum
 
 from contracts.interface import ContractInterface
 from eth_typing import BlockIdentifier, ChecksumAddress
-from web3.contract.contract import ContractFunction
 
 logger = logging.getLogger(__name__)
 
