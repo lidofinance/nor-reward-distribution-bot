@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 import variables
 from contracts.node_operator_registry import RewardDistributionState
-from metrics.metrics import REWARDS_DISTRIBUTION_STATUS
+from metrics.metrics import REWARDS_DISTRIBUTION_STATUS, SHARES_TO_DISTRIBUTE
 from web3.contract.contract import ContractFunction
 from web3.exceptions import ContractLogicError
 from web3.types import BlockData
@@ -30,6 +30,14 @@ class RewardLiquidationBot:
 
             if state is not RewardDistributionState.READY_FOR_DISTRIBUTION:
                 logger.info({'msg': 'NOR is not ready to distribute rewards.'})
+                continue
+
+            shares_on_balance = self.w3.lido.steth.shares_of(nor.address)
+
+            SHARES_TO_DISTRIBUTE.labels(nor.address).set(shares_on_balance)
+
+            if shares_on_balance < variables.MIN_SHARES_TO_DISTRIBUTE:
+                logger.info({'msg': 'NOR balance is too low to distribute rewards.'})
                 continue
 
             tx = nor.distribute_reward()

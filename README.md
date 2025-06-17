@@ -12,15 +12,15 @@ anyone can initiate the reward distribution to allocate rewards among Node Opera
 - [Description](#overview)
 - [Table of Contents](#table-of-contents)
 - [Development](#getting-started)
-    - [Install](#install)
-    - [Tests](#tests)
-    - [Release flow](#release-flow)
+  - [Install](#install)
+  - [Tests](#tests)
+  - [Release flow](#release-flow)
 - [Monitoring](#monitoring)
-    - [Metrics](#metrics)
-    - [Alerts](#alerts)
+  - [Metrics](#metrics)
+  - [Alerts](#alerts)
 - [Variables](#variables)
-    - [Required variables](#required)
-    - [Additional variables](#optional)
+  - [Required variables](#required)
+  - [Additional variables](#optional)
 - [Licence](#licence)
 
 ## Getting started
@@ -44,7 +44,7 @@ poetry run python src/main.py
 #### Run unit tests
 
 ```bash
-NODE_OPERATOR_REGISTRY_ADDRESSES='' WEB3_RPC_ENDPOINTS='' poetry run pytest tests -m unit
+STETH_ADDRESS='' NODE_OPERATOR_REGISTRY_ADDRESSES='' WEB3_RPC_ENDPOINTS='' poetry run pytest tests -m unit
 ```
 
 #### Run integration tests.
@@ -54,6 +54,7 @@ To run integration tests install Anvil.
 Run integration tests on Holesky testnet fork:
 
 ```bash
+export STETH_ADDRESS=0xffc41725c09407e4713fb4d02bc814c40ed15fd1
 export NODE_OPERATOR_REGISTRY_ADDRESSES=0xE12ABf35fA6f69C97Cc0AcF67B38D3000435790e
 export WEB3_RPC_ENDPOINTS=https://holesky.infura.io/v3/<key>
 
@@ -91,7 +92,7 @@ Alerts source code could be found [here](alerts).
 Alerts list:
 
 | Name                             | Description                               |
-|----------------------------------|-------------------------------------------|
+| -------------------------------- | ----------------------------------------- |
 | DistributionBotLowAccountBalance | Account balance is low                    |
 | DistributionBotStaleHeadBlock    | Block head didn't update for a while      |
 | DistributionBotNoDistributions   | No reward distribution for a while        |
@@ -105,16 +106,18 @@ Run alerts tests with: `promtool test rules alerts/alerts.tests.yml`
 ### Required
 
 | Variable                         | Default                                    | Description                                                                                                                                               |
-|----------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | WEB3_RPC_ENDPOINTS               | -                                          | List of rpc endpoints that will be used to send requests (comma separated)                                                                                |
 | WALLET_PRIVATE_KEY               | -                                          | Account private key                                                                                                                                       |
+| STETH_REGISTRY_ADDRESSES         | 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 | StETH token address. Address could be found [here](https://docs.lido.fi/deployed-contracts/)                                                              |
 | NODE_OPERATOR_REGISTRY_ADDRESSES | 0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5 | Lido Node Operator Registry module address (or based on it). Addresses could be found [here](https://docs.lido.fi/deployed-contracts/). Separate with `,` |
-| BLOCKS_BETWEEN_EXECUTION         | 1                                          | Number of blocks between bot executions                                                                                                                   |                                                                                                                   
+| BLOCKS_BETWEEN_EXECUTION         | 1                                          | Number of blocks between bot executions                                                                                                                   |
+| MIN_SHARES_TO_DISTRIBUTE         | 10 \*\* 9                                  | Min number of shares to distribute                                                                                                                        |
 
 ### Optional
 
 | Variable                | Default | Description                   |
-|-------------------------|---------|-------------------------------|
+| ----------------------- | ------- | ----------------------------- |
 | PROMETHEUS_PORT         | 9000    | Port with metrics server      |
 | HEALTHCHECK_SERVER_PORT | 9010    | Port with bot`s status server |
 

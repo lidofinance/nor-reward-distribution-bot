@@ -58,8 +58,25 @@ def test_execute(distributor, set_account):
     distributor.w3.lido.nor_contracts[0].get_reward_distribution_state = Mock(
         return_value=RewardDistributionState.READY_FOR_DISTRIBUTION,
     )
+    distributor.w3.lido.steth.shares_of = Mock(return_value=10**10)  # Above MIN_SHARES_TO_DISTRIBUTE
 
     distributor.execute(BlockData())
 
     distributor._send_transaction.assert_called_once()
     distributor.w3.lido.nor_contracts[0].distribute_reward.assert_called_once()
+
+
+def test_balance_too_low_to_distribute(distributor, caplog):
+    caplog.set_level(logging.INFO)
+
+    distributor.w3.lido.nor_contracts[0].get_contract_version = Mock(return_value=3)
+    distributor.w3.lido.nor_contracts[0].get_reward_distribution_state = Mock(
+        return_value=RewardDistributionState.READY_FOR_DISTRIBUTION,
+    )
+    distributor.w3.lido.steth.shares_of = Mock(return_value=10**8)  # Below MIN_SHARES_TO_DISTRIBUTE
+    distributor._send_transaction = Mock()
+
+    distributor.execute(BlockData())
+
+    assert 'NOR balance is too low to distribute rewards.' in caplog.messages[0]
+    distributor._send_transaction.assert_not_called()
