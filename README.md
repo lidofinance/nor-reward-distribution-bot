@@ -92,7 +92,7 @@ Alerts source code could be found [here](alerts).
 Alerts list:
 
 | Name                             | Description                               |
-| -------------------------------- | ----------------------------------------- |
+|----------------------------------|-------------------------------------------|
 | DistributionBotLowAccountBalance | Account balance is low                    |
 | DistributionBotStaleHeadBlock    | Block head didn't update for a while      |
 | DistributionBotNoDistributions   | No reward distribution for a while        |
@@ -106,10 +106,10 @@ Run alerts tests with: `promtool test rules alerts/alerts.tests.yml`
 ### Required
 
 | Variable                         | Default                                    | Description                                                                                                                                               |
-| -------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|----------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | WEB3_RPC_ENDPOINTS               | -                                          | List of rpc endpoints that will be used to send requests (comma separated)                                                                                |
 | WALLET_PRIVATE_KEY               | -                                          | Account private key                                                                                                                                       |
-| STETH_ADDRESSES         | 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 | StETH token address. Address could be found [here](https://docs.lido.fi/deployed-contracts/)                                                              |
+| STETH_ADDRESSES                  | 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 | StETH token address. Address could be found [here](https://docs.lido.fi/deployed-contracts/)                                                              |
 | NODE_OPERATOR_REGISTRY_ADDRESSES | 0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5 | Lido Node Operator Registry module address (or based on it). Addresses could be found [here](https://docs.lido.fi/deployed-contracts/). Separate with `,` |
 | BLOCKS_BETWEEN_EXECUTION         | 1                                          | Number of blocks between bot executions                                                                                                                   |
 | MIN_SHARES_TO_DISTRIBUTE         | 10 \*\* 9                                  | Min number of shares to distribute                                                                                                                        |
