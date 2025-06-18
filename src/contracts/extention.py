@@ -3,6 +3,7 @@ from typing import cast
 
 import variables
 from contracts.node_operator_registry import NodeOperatorRegistryContract
+from contracts.steth import StETHContract
 from web3 import Web3
 from web3.module import Module
 
@@ -24,3 +25,11 @@ class LidoContracts(Module):
                 ),
             ) for address in variables.NODE_OPERATOR_REGISTRY_ADDRESSES
         ]
+
+        self.steth = cast(
+            StETHContract,
+            self.w3.eth.contract(
+                address=self.w3.to_checksum_address(variables.STETH_ADDRESS),
+                ContractFactoryClass=StETHContract,
+            ),
+        )

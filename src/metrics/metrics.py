@@ -12,6 +12,13 @@ REWARDS_DISTRIBUTION_STATUS = Gauge(
     namespace=PREFIX,
 )
 
+SHARES_TO_DISTRIBUTE = Gauge(
+    'shares_to_distribute',
+    'Current shares to distribute among node operators.',
+    ['address'],
+    namespace=PREFIX,
+)
+
 LATEST_BLOCK_NUMBER = Gauge('latest_block_number', 'Latest checked block number.', namespace=PREFIX)
 
 UNEXPECTED_EXCEPTIONS = Counter(
