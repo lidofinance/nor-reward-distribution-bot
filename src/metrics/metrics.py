@@ -28,18 +28,6 @@ UNEXPECTED_EXCEPTIONS = Counter(
     namespace=PREFIX,
 )
 
-ETH_RPC_REQUESTS_DURATION = Histogram(
-    'eth_rpc_requests_duration',
-    'Duration of requests to ETH1 RPC',
-    namespace=PREFIX,
-)
-ETH_RPC_REQUESTS = Counter(
-    'eth_rpc_requests',
-    'Total count of requests to ETH1 RPC',
-    ['method', 'code', 'domain'],
-    namespace=PREFIX,
-)
-
 INFO = Info(name='build', documentation='Info metric', namespace=PREFIX)
 CONVERTED_PUBLIC_ENV = {k: str(v) for k, v in PUBLIC_ENV_VARS.items()}
 INFO.info(CONVERTED_PUBLIC_ENV)
