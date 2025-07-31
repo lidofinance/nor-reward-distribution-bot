@@ -2,37 +2,11 @@ import time
 from unittest.mock import Mock
 
 import pytest
-from services.block_iterator import CycleHandler, exception_handler
+from services.block_iterator import CycleHandler
 from utils.timeout import TimeoutManagerError
 from web3.types import BlockData
-from web3_multi_provider import NoActiveProviderError
 
 pytestmark = pytest.mark.unit
-
-
-@pytest.mark.parametrize(
-    ('expected_exception', 'result'),
-    [
-        (None, 'ignore'),
-        (TimeoutManagerError, 'raise'),
-        (NoActiveProviderError, 'raise'),
-        (Exception, 'ignore'),
-        (ValueError, 'ignore'),
-    ],
-)
-def test_exception_handler(expected_exception, result):
-    @exception_handler
-    def func(exc):
-        if exc is None:
-            return
-
-        raise exc
-
-    if result == 'raise':
-        with pytest.raises(expected_exception):
-            func(expected_exception)
-    else:
-        func(expected_exception)
 
 
 @pytest.fixture
