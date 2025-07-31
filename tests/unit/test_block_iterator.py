@@ -2,10 +2,9 @@ import time
 from unittest.mock import Mock
 
 import pytest
-from services.block_iterator import CycleHandler, exception_handler
+from services.block_iterator import CycleHandler
 from utils.timeout import TimeoutManagerError
 from web3.types import BlockData
-from web3_multi_provider import NoActiveProviderError
 
 pytestmark = pytest.mark.unit
 

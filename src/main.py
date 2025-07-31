@@ -5,7 +5,7 @@ from metrics.healthcheck import start_pulse_server
 from metrics.logging import logging
 from prometheus_client import start_http_server
 from services.block_iterator import CycleHandler
-from web3_multi_provider import init_metrics, MultiProvider
+from web3_multi_provider import MultiProvider, init_metrics
 from web3_types import Web3
 
 logger = logging.getLogger(__name__)
