@@ -65,7 +65,7 @@ class RewardLiquidationBot:
 
         signed_tx = self.w3.eth.account.sign_transaction(tx, variables.ACCOUNT.key)
 
-        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.raw_transaction)
         logger.info({'msg': 'Transaction sent.', 'value': repr(tx_hash)})
 
         self.w3.eth.wait_for_transaction_receipt(tx_hash)

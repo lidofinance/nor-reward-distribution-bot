@@ -1,4 +1,4 @@
-from prometheus_client.metrics import Counter, Gauge, Histogram, Info
+from prometheus_client.metrics import Counter, Gauge, Info
 from variables import PUBLIC_ENV_VARS
 
 PREFIX = 'distribution_bot'
@@ -25,18 +25,6 @@ UNEXPECTED_EXCEPTIONS = Counter(
     'unexpected_exceptions',
     'Total count of unexpected exceptions',
     ['type'],
-    namespace=PREFIX,
-)
-
-ETH_RPC_REQUESTS_DURATION = Histogram(
-    'eth_rpc_requests_duration',
-    'Duration of requests to ETH1 RPC',
-    namespace=PREFIX,
-)
-ETH_RPC_REQUESTS = Counter(
-    'eth_rpc_requests',
-    'Total count of requests to ETH1 RPC',
-    ['method', 'code', 'domain'],
     namespace=PREFIX,
 )
 
