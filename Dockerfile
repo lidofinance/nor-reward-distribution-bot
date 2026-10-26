@@ -1,6 +1,5 @@
-# python:3.12-slim on Debian 13 (trixie), pinned by the multi-arch index digest.
-# Update the digest together with the apt package versions below.
-FROM python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2 AS base
+# Debian 13 (trixie) based image. Update the tag together with the apt package versions below.
+FROM python:3.12.15-slim AS base
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
