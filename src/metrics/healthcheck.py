@@ -42,6 +42,10 @@ class PulseRequestHandler(BaseHTTPRequestHandler):
         # Disable non-error logs
         pass
 
+    def log_error(self, format, *args):
+        # Route the server's own errors (for example a read timeout) through the JSON logger instead of stderr
+        logger.warning({'msg': 'Healthcheck server error.', 'client': self.client_address[0], 'error': format % args})
+
 
 def start_pulse_server(host: str, port: int) -> ThreadingHTTPServer:
     """Serve the health check on host:port in a daemon thread. The host must accept loopback connections for pulse()."""

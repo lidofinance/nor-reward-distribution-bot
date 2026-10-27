@@ -62,14 +62,19 @@ def test_stalled_client_does_not_block_other_requests(server, monkeypatch):
     assert response.status_code == 200
 
 
-def test_stalled_client_is_disconnected_after_timeout(server, monkeypatch):
+def test_stalled_client_is_disconnected_after_timeout(server, monkeypatch, caplog):
     monkeypatch.setattr(healthcheck.PulseRequestHandler, 'timeout', 0.2)
     stalled = socket.create_connection(server.server_address[:2], timeout=5)
 
     try:
-        assert stalled.recv(1) == b''
+        with caplog.at_level('WARNING', logger='metrics.healthcheck'):
+            assert stalled.recv(1) == b''
     finally:
         stalled.close()
+
+    [record] = caplog.records
+    assert record.msg['msg'] == 'Healthcheck server error.'
+    assert 'timed out' in record.msg['error']
 
 
 def test_server_does_not_serve_files(server, monkeypatch):
