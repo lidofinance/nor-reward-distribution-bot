@@ -1,7 +1,7 @@
 import logging
 import threading
 from datetime import datetime, timedelta
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import requests
 
@@ -19,6 +19,9 @@ def pulse(port: int):
 
 
 class PulseRequestHandler(BaseHTTPRequestHandler):
+    # Seconds to wait for a client to send its request. Without it a stalled client holds the connection forever.
+    timeout = 5
+
     def do_GET(self):
         global _last_pulse
 
@@ -40,9 +43,9 @@ class PulseRequestHandler(BaseHTTPRequestHandler):
         pass
 
 
-def start_pulse_server(host: str, port: int) -> HTTPServer:
+def start_pulse_server(host: str, port: int) -> ThreadingHTTPServer:
     """Serve the health check on host:port in a daemon thread. The host must accept loopback connections for pulse()."""
-    server = HTTPServer(
+    server = ThreadingHTTPServer(
         (host, port),
         RequestHandlerClass=PulseRequestHandler,
     )

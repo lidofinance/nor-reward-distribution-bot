@@ -1,3 +1,4 @@
+import socket
 from datetime import datetime, timedelta
 
 import pytest
@@ -47,6 +48,28 @@ def test_pulse_refreshes_the_healthcheck(server, monkeypatch):
     response = requests.get(url(server, '/healthcheck'), timeout=5)
 
     assert response.status_code == 200
+
+
+def test_stalled_client_does_not_block_other_requests(server, monkeypatch):
+    monkeypatch.setattr(healthcheck, '_last_pulse', datetime.now())
+    stalled = socket.create_connection(server.server_address[:2], timeout=5)
+
+    try:
+        response = requests.get(url(server, '/healthcheck'), timeout=2)
+    finally:
+        stalled.close()
+
+    assert response.status_code == 200
+
+
+def test_stalled_client_is_disconnected_after_timeout(server, monkeypatch):
+    monkeypatch.setattr(healthcheck.PulseRequestHandler, 'timeout', 0.2)
+    stalled = socket.create_connection(server.server_address[:2], timeout=5)
+
+    try:
+        assert stalled.recv(1) == b''
+    finally:
+        stalled.close()
 
 
 def test_server_does_not_serve_files(server, monkeypatch):
