@@ -28,11 +28,6 @@ RUN poetry install --only main --no-root
 # Runtime stage: the virtualenv from the builder, the application code and curl for the health check.
 FROM base AS production
 
-# Passed by the CI build workflow; defaults keep local builds working.
-ARG BUILD_VERSION=unknown
-ARG BUILD_BRANCH=unknown
-ARG BUILD_COMMIT=unknown
-
 RUN apt-get update && apt-get install -y --no-install-recommends -qq \
     curl=8.14.1-2+deb13u7 \
  && apt-get clean \
@@ -44,8 +39,16 @@ WORKDIR /app
 COPY interfaces ./interfaces
 COPY src ./src
 
-RUN printf '{"version":"%s","branch":"%s","commit":"%s","buildTime":"%s"}\n' \
-      "$BUILD_VERSION" "$BUILD_BRANCH" "$BUILD_COMMIT" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > /app/build-info.json \
+# Build metadata for the startup log and the build_info metric. The Harbor workflow passes these as build args;
+# regenerate build-info.json from them. Local builds without the args keep the tracked "unknown" placeholders.
+ARG BUILD_VERSION
+ARG BUILD_BRANCH
+ARG BUILD_COMMIT
+COPY build-info.json ./
+RUN if [ -n "$BUILD_COMMIT" ]; then \
+      printf '{"version":"%s","branch":"%s","commit":"%s"}\n' \
+        "$BUILD_VERSION" "$BUILD_BRANCH" "$BUILD_COMMIT" > build-info.json; \
+    fi \
  && chown -R www-data /app/
 
 ENV PROMETHEUS_PORT=9000

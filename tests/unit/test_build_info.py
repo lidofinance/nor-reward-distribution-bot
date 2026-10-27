@@ -5,7 +5,7 @@ from utils.build_info import UNKNOWN, load_build_info
 
 pytestmark = pytest.mark.unit
 
-ALL_UNKNOWN = {'version': UNKNOWN, 'branch': UNKNOWN, 'commit': UNKNOWN, 'buildTime': UNKNOWN}
+ALL_UNKNOWN = {'version': UNKNOWN, 'branch': UNKNOWN, 'commit': UNKNOWN}
 
 
 def test_missing_file_gives_unknown(tmp_path):
@@ -14,7 +14,7 @@ def test_missing_file_gives_unknown(tmp_path):
 
 def test_reads_all_values(tmp_path):
     path = tmp_path / 'build-info.json'
-    expected = {'version': '1.2.0', 'branch': 'main', 'commit': 'abc123', 'buildTime': '2026-10-23T10:00:00Z'}
+    expected = {'version': '1.2.0', 'branch': 'main', 'commit': 'abc123'}
     path.write_text(json.dumps(expected))
 
     assert load_build_info(path) == expected

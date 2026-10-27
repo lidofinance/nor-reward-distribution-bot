@@ -4,14 +4,14 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-# Written by the Dockerfile from the BUILD_VERSION, BUILD_BRANCH and BUILD_COMMIT build args (/app/build-info.json in the image).
+# Placeholders in the repo; the Docker build fills the file from the BUILD_VERSION, BUILD_BRANCH and BUILD_COMMIT build args.
 BUILD_INFO_PATH = Path(__file__).resolve().parents[2] / 'build-info.json'
-BUILD_INFO_KEYS: tuple[str, ...] = ('version', 'branch', 'commit', 'buildTime')
+BUILD_INFO_KEYS: tuple[str, ...] = ('version', 'branch', 'commit')
 UNKNOWN = 'unknown'
 
 
 def load_build_info(path: Path = BUILD_INFO_PATH) -> dict[str, str]:
-    """Return version, branch, commit and buildTime of this build. Missing or unreadable values are 'unknown'."""
+    """Return version, branch and commit of this build. Missing or unreadable values are 'unknown'."""
     info = dict.fromkeys(BUILD_INFO_KEYS, UNKNOWN)
 
     try:
