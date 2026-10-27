@@ -96,6 +96,11 @@ It listens on all interfaces by default, so container probes (Docker `HEALTHCHEC
 The Docker build fills them from the `BUILD_VERSION`, `BUILD_BRANCH` and `BUILD_COMMIT` build args when they are passed.
 The bot logs them at startup and exposes them in the `distribution_bot_build_info` metric.
 
+### Logs
+
+Logs are JSON lines on stdout. At startup the bot logs all its variables with the secret values masked.
+The values of the secret variables (`WEB3_RPC_ENDPOINTS`, `WALLET_PRIVATE_KEY`) are replaced with `***` in every log line, including messages from the libraries.
+
 ### Alerts
 
 Integrated with Alertmanager and Prometheus to provide real-time alerts based on predefined metrics.  

@@ -2,6 +2,7 @@ import os
 
 from eth_account import Account
 from utils.build_info import load_build_info
+from utils.secrets import MASKED_VALUE
 
 WALLET_PRIVATE_KEY = os.getenv('WALLET_PRIVATE_KEY', None)
 
@@ -40,8 +41,6 @@ PRIVATE_ENV_VARS = {
 }
 
 assert not set(PRIVATE_ENV_VARS.keys()).intersection(set(PUBLIC_ENV_VARS.keys()))
-
-MASKED_VALUE = '***'
 
 
 def _mask(value):
