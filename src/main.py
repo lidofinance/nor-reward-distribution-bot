@@ -1,3 +1,7 @@
+import signal
+import sys
+from types import FrameType
+
 import variables
 from bots.distributor import RewardLiquidationBot
 from contracts.extention import LidoContracts
@@ -10,7 +14,17 @@ from web3_types import Web3
 
 logger = logging.getLogger(__name__)
 
+
+def shutdown(signum: int, frame: FrameType | None) -> None:
+    """Exit cleanly on SIGTERM/SIGINT. As PID 1 in a container the process would ignore the signal and get SIGKILL."""
+    logger.info({'msg': f'{signal.Signals(signum).name} received. Shut down.'})
+    sys.exit(0)
+
+
 if __name__ == '__main__':
+    signal.signal(signal.SIGTERM, shutdown)
+    signal.signal(signal.SIGINT, shutdown)
+
     logger.info({'msg': 'Start Reward distribution bot.', 'build': variables.BUILD_INFO})
     logger.info({'msg': 'Bot env variables', 'value': variables.env_vars_for_log()})
 

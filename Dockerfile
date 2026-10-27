@@ -1,4 +1,3 @@
-# Debian 13 (trixie) based image. Update the tag together with the apt package versions below.
 FROM python:3.12.15-slim AS base
 
 ENV PYTHONUNBUFFERED=1 \
@@ -9,7 +8,6 @@ ENV PYTHONUNBUFFERED=1 \
 
 ENV PATH="$VENV_PATH/bin:$PATH"
 
-# Build stage: the compiler and headers are needed only to install the dependencies.
 FROM base AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends -qq \
@@ -25,7 +23,6 @@ WORKDIR /
 COPY pyproject.toml poetry.lock ./
 RUN poetry install --only main --no-root
 
-# Runtime stage: the virtualenv from the builder, the application code and curl for the health check.
 FROM base AS production
 
 RUN apt-get update && apt-get install -y --no-install-recommends -qq \
