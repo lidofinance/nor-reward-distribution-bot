@@ -1,7 +1,7 @@
 import logging
 import threading
 from datetime import datetime, timedelta
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import requests
 
@@ -18,7 +18,10 @@ def pulse(port: int):
         logger.warning({'msg': 'Healthcheck server is not responding.', 'error': str(error)})
 
 
-class PulseRequestHandler(SimpleHTTPRequestHandler):
+class PulseRequestHandler(BaseHTTPRequestHandler):
+    # Seconds to wait for a client to send its request. Without it a stalled client holds the connection forever.
+    timeout = 5
+
     def do_GET(self):
         global _last_pulse
 
@@ -39,11 +42,17 @@ class PulseRequestHandler(SimpleHTTPRequestHandler):
         # Disable non-error logs
         pass
 
+    def log_error(self, format, *args):
+        # Route the server's own errors (for example a read timeout) through the JSON logger instead of stderr
+        logger.warning({'msg': 'Healthcheck server error.', 'client': self.client_address[0], 'error': format % args})
 
-def start_pulse_server(port: int):
-    server = HTTPServer(
-        ('localhost', port),
+
+def start_pulse_server(host: str, port: int) -> ThreadingHTTPServer:
+    """Serve the health check on host:port in a daemon thread. The host must accept loopback connections for pulse()."""
+    server = ThreadingHTTPServer(
+        (host, port),
         RequestHandlerClass=PulseRequestHandler,
     )
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
+    return server

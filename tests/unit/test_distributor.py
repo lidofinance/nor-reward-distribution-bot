@@ -48,7 +48,7 @@ def test_contract_not_ready_to_distribute(distributor, caplog):
 def test_dry_mode(distributor, caplog):
     distributor._send_transaction(Mock())
 
-    assert 'Account is not provided. Dry mode.' in caplog.messages[0]
+    assert caplog.records[-1].msg == {'msg': 'Account is not provided. Dry mode.'}
 
 
 def test_execute(distributor, set_account):
