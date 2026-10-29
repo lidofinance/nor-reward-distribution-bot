@@ -1,8 +1,8 @@
 import os
 
 from eth_account import Account
+from logmask import masked_config
 from utils.build_info import load_build_info
-from utils.secrets import MASKED_VALUE
 
 WALLET_PRIVATE_KEY = os.getenv('WALLET_PRIVATE_KEY', None)
 
@@ -43,15 +43,6 @@ PRIVATE_ENV_VARS = {
 assert not set(PRIVATE_ENV_VARS.keys()).intersection(set(PUBLIC_ENV_VARS.keys()))
 
 
-def _mask(value):
-    if isinstance(value, list):
-        return [MASKED_VALUE for _ in value]
-    return MASKED_VALUE if value else ''
-
-
 def env_vars_for_log() -> dict:
     """All bot variables for the startup log. Secret values are masked, unset ones stay empty."""
-    return {
-        **PUBLIC_ENV_VARS,
-        **{key: _mask(value) for key, value in PRIVATE_ENV_VARS.items()},
-    }
+    return masked_config(PUBLIC_ENV_VARS, PRIVATE_ENV_VARS)

@@ -2,6 +2,7 @@ import json
 
 import pytest
 import variables
+from logmask import MASKED_VALUE
 
 pytestmark = pytest.mark.unit
 
@@ -18,8 +19,8 @@ def test_env_vars_for_log_masks_secrets(monkeypatch):
 
     logged = variables.env_vars_for_log()
 
-    assert logged['WEB3_RPC_ENDPOINTS'] == [variables.MASKED_VALUE, variables.MASKED_VALUE]
-    assert logged['WALLET_PRIVATE_KEY'] == variables.MASKED_VALUE
+    assert logged['WEB3_RPC_ENDPOINTS'] == [MASKED_VALUE, MASKED_VALUE]
+    assert logged['WALLET_PRIVATE_KEY'] == MASKED_VALUE
     assert 'secret-key' not in json.dumps(logged)
     assert '1' * 64 not in json.dumps(logged)
 

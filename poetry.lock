@@ -1082,6 +1082,17 @@ files = [
 ]
 
 [[package]]
+name = "logmask"
+version = "0.1.4"
+description = "JSON logging with masked secrets for Python services"
+optional = false
+python-versions = "<4,>=3.12"
+files = [
+    {file = "logmask-0.1.4-py3-none-any.whl", hash = "sha256:141616fc8a8dfb048cbc8b40bed3474a33f4099cabd27a503a4a32aee842b7d6"},
+    {file = "logmask-0.1.4.tar.gz", hash = "sha256:6d2461435c5888678b09f9a29654f0cb1d4b488e9b9090bdf12e44aebd1a67d7"},
+]
+
+[[package]]
 name = "multidict"
 version = "6.7.1"
 description = "multidict implementation"
@@ -2262,4 +2273,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "d5bfed88842eb5dbeaf4f12afdb208933e8f436a13f3f9339f3a2615a2991f3d"
+content-hash = "6319d1e3be50e7658b952629e20ffa421403971201d25bcfa55e17d64d2ecc93"

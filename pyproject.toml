@@ -13,6 +13,7 @@ web3 = "^7.8.0"
 prometheus-client = "0.21.1"
 requests = "^2.32.3"
 web3-multi-provider = { version = "^2.2.7", extras = ["metrics"] }
+logmask = "^0.1.4"
 
 
 [tool.poetry.group.dev.dependencies]
