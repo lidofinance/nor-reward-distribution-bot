@@ -84,6 +84,18 @@ To create a new release:
 Metrics list could be found in [source code](src/metrics/metrics.py).
 Prometheus server hosted on `http://localhost:${{PROMETHEUS_PORT}}/`.
 
+### Health check
+
+The bot serves `http://${{HEALTHCHECK_SERVER_HOST}}:${{HEALTHCHECK_SERVER_PORT}}/healthcheck`.
+It returns `200` while the bot completes cycles and `503` when there was no cycle for 10 minutes.
+It listens on all interfaces by default, so container probes (Docker `HEALTHCHECK`, Kubernetes `httpGet`) can reach it.
+
+### Build info
+
+`build-info.json` in the repo holds `unknown` placeholders for `version`, `branch` and `commit`.
+The Docker build fills them from the `BUILD_VERSION`, `BUILD_BRANCH` and `BUILD_COMMIT` build args when they are passed.
+The bot logs them at startup and exposes them in the `distribution_bot_build_info` metric.
+
 ### Alerts
 
 Integrated with Alertmanager and Prometheus to provide real-time alerts based on predefined metrics.  
@@ -105,21 +117,22 @@ Run alerts tests with: `promtool test rules alerts/alerts.tests.yml`
 
 ### Required
 
-| Variable                         | Default                                    | Description                                                                                                                                               |
-| -------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| WEB3_RPC_ENDPOINTS               | -                                          | List of rpc endpoints that will be used to send requests (comma separated)                                                                                |
-| WALLET_PRIVATE_KEY               | -                                          | Account private key                                                                                                                                       |
-| STETH_ADDRESSES         | 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 | StETH token address. Address could be found [here](https://docs.lido.fi/deployed-contracts/)                                                              |
-| NODE_OPERATOR_REGISTRY_ADDRESSES | 0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5 | Lido Node Operator Registry module address (or based on it). Addresses could be found [here](https://docs.lido.fi/deployed-contracts/). Separate with `,` |
-| BLOCKS_BETWEEN_EXECUTION         | 1                                          | Number of blocks between bot executions                                                                                                                   |
-| MIN_SHARES_TO_DISTRIBUTE         | 10 \*\* 9                                  | Min number of shares to distribute                                                                                                                        |
+| Variable                         | Default | Description                                                                                                                                                                                       |
+| -------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WEB3_RPC_ENDPOINTS               | -       | List of rpc endpoints that will be used to send requests (comma separated)                                                                                                                        |
+| WALLET_PRIVATE_KEY               | -       | Account private key. Without it the bot runs in dry mode: it checks the distribution state and logs, but does not send transactions                                                               |
+| STETH_ADDRESS                    | -       | StETH token address, for example `0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84` on mainnet. Address could be found [here](https://docs.lido.fi/deployed-contracts/)                                 |
+| NODE_OPERATOR_REGISTRY_ADDRESSES | -       | Lido Node Operator Registry module addresses (or based on it), for example `0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5` on mainnet. Addresses could be found [here](https://docs.lido.fi/deployed-contracts/). Separate with `,` |
 
 ### Optional
 
-| Variable                | Default | Description                   |
-| ----------------------- | ------- | ----------------------------- |
-| PROMETHEUS_PORT         | 9000    | Port with metrics server      |
-| HEALTHCHECK_SERVER_PORT | 9010    | Port with bot`s status server |
+| Variable                 | Default   | Description                                                                 |
+| ------------------------ | --------- | --------------------------------------------------------------------------- |
+| BLOCKS_BETWEEN_EXECUTION | 1         | Number of blocks between bot executions                                     |
+| MIN_SHARES_TO_DISTRIBUTE | 10 \*\* 9 | Min number of shares to distribute                                          |
+| PROMETHEUS_PORT          | 9000      | Port with metrics server                                                    |
+| HEALTHCHECK_SERVER_HOST  | 0.0.0.0   | Address the health check server listens on. Must accept loopback connections |
+| HEALTHCHECK_SERVER_PORT  | 9010      | Port with bot`s status server                                               |
 
 ## License
 

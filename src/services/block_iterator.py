@@ -24,7 +24,7 @@ def exception_handler(function):
             raise TimeoutManagerError('Bot stuck. Shut down.') from exception
         except NoActiveProviderError as exception:
             logger.error({'msg': 'No active node available. Shut down.', 'error': str(exception)})
-            raise NoActiveProviderError from exception
+            raise
         except Exception as error:
             logger.error({'msg': 'Unexpected error.', 'error': str(error), 'args': str(error.args)})
             UNEXPECTED_EXCEPTIONS.labels('exception').inc()
