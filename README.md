@@ -139,9 +139,42 @@ Run alerts tests with: `promtool test rules alerts/alerts.tests.yml`
 ### Secrets from files
 
 `WEB3_RPC_ENDPOINTS` and `WALLET_PRIVATE_KEY` can be read from files instead of the env: set `<NAME>_FILE` to the path, one secret per file.
-This is how secrets mounted by a container platform are picked up without a shell wrapper.
-Trailing whitespace of the file is ignored. A path that cannot be read stops the bot at startup.
-The files are read once at startup: to apply a new value, restart the bot.
+This is how secrets mounted by a container platform (for example by a secrets agent sidecar) are picked up without a shell wrapper.
+
+Rules:
+
+- The file holds the plain value, exactly as it would be set in the env. Trailing whitespace is ignored.
+- `<NAME>_FILE` takes priority over `<NAME>` when both are set.
+- The files are read once at startup, then the values are used until the process ends. To apply a new value, restart the bot.
+- A path that cannot be read, or a file that is not UTF-8 text, stops the bot at startup. The error names the variable and the path, never the content.
+- An empty `WALLET_PRIVATE_KEY_FILE` means no key: the bot runs in dry mode.
+
+Local example:
+
+```bash
+mkdir -p secrets
+printf '%s' '0x<private key>' > secrets/wallet-private-key
+printf '%s' 'https://rpc-one/<key>,https://rpc-two/<key>' > secrets/web3-rpc-endpoints
+chmod 600 secrets/*
+
+WALLET_PRIVATE_KEY_FILE=$PWD/secrets/wallet-private-key \
+WEB3_RPC_ENDPOINTS_FILE=$PWD/secrets/web3-rpc-endpoints \
+NODE_OPERATOR_REGISTRY_ADDRESSES=0x... STETH_ADDRESS=0x... \
+poetry run python src/main.py
+```
+
+The same with Docker, the files mounted read-only:
+
+```bash
+docker run --rm \
+  -v "$PWD/secrets:/run/secrets:ro" \
+  -e WALLET_PRIVATE_KEY_FILE=/run/secrets/wallet-private-key \
+  -e WEB3_RPC_ENDPOINTS_FILE=/run/secrets/web3-rpc-endpoints \
+  -e NODE_OPERATOR_REGISTRY_ADDRESSES=0x... -e STETH_ADDRESS=0x... \
+  lidofinance/nor-reward-distribution-bot:<tag>
+```
+
+The startup log shows the `_FILE` paths in the config dump, so it is visible which source was used; the values stay masked.
 
 ## License
 
