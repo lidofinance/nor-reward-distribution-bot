@@ -1,3 +1,4 @@
+import traceback
 from pathlib import Path
 
 import pytest
@@ -77,5 +78,9 @@ def test_binary_file_fails_without_quoting_its_content(monkeypatch, secret_file)
     with pytest.raises(ValueError, match='not UTF-8') as error:
         from_file_or_env(ENV_NAME)
 
-    assert 'secret-bytes' not in str(error.value)
-    assert 'xff' not in str(error.value)
+    # The whole traceback, including a chained cause, is what a crash would print.
+    printed = ''.join(traceback.format_exception(error.value))
+    assert str(secret_file) in printed
+    assert 'secret-bytes' not in printed
+    assert 'xff' not in printed
+    assert 'UnicodeDecodeError' not in printed

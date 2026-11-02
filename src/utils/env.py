@@ -27,9 +27,9 @@ def from_file_or_env(env_name: str, required: bool = False) -> str | None:
                 return file.read().rstrip()
         except OSError as error:
             raise ValueError(f'{filepath_env} points to a file that cannot be read: {error}. Fix or remove the variable.') from error
-        except UnicodeDecodeError as error:
-            # No details from the decoder: they would quote bytes of the secret.
-            raise ValueError(f'{filepath_env} points to a file that is not UTF-8 text. Fix or remove the variable.') from error
+        except UnicodeDecodeError:
+            # No details from the decoder and no chained cause: both would quote bytes of the secret in the traceback.
+            raise ValueError(f'{filepath_env} points to {filepath}, which is not UTF-8 text. Fix or remove the variable.') from None
 
     value = os.getenv(env_name)
     if value is None and required:
