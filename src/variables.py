@@ -5,8 +5,6 @@ from logmask import masked_config
 from utils.build_info import load_build_info
 from utils.env import from_file_or_env
 
-# Secrets come from the env or, when <NAME>_FILE is set, from that file (one secret per file, mounted by the platform).
-# Both forms are read once here at startup: a changed secret takes effect after a restart.
 WALLET_PRIVATE_KEY = from_file_or_env('WALLET_PRIVATE_KEY')
 
 # Without the key (unset variable or empty file) the bot runs in dry mode: it checks the distribution state and logs,
