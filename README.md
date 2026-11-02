@@ -119,8 +119,8 @@ Run alerts tests with: `promtool test rules alerts/alerts.tests.yml`
 
 | Variable                         | Default | Description                                                                                                                                                                                       |
 | -------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| WEB3_RPC_ENDPOINTS               | -       | List of rpc endpoints that will be used to send requests (comma separated)                                                                                                                        |
-| WALLET_PRIVATE_KEY               | -       | Account private key. Without it the bot runs in dry mode: it checks the distribution state and logs, but does not send transactions                                                               |
+| WEB3_RPC_ENDPOINTS               | -       | List of rpc endpoints that will be used to send requests (comma separated). Can be given as a file instead, see `WEB3_RPC_ENDPOINTS_FILE`                                                          |
+| WALLET_PRIVATE_KEY               | -       | Account private key. Without it the bot runs in dry mode: it checks the distribution state and logs, but does not send transactions. Can be given as a file instead, see `WALLET_PRIVATE_KEY_FILE` |
 | STETH_ADDRESS                    | -       | StETH token address, for example `0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84` on mainnet. Address could be found [here](https://docs.lido.fi/deployed-contracts/)                                 |
 | NODE_OPERATOR_REGISTRY_ADDRESSES | -       | Lido Node Operator Registry module addresses (or based on it), for example `0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5` on mainnet. Addresses could be found [here](https://docs.lido.fi/deployed-contracts/). Separate with `,` |
 
@@ -133,6 +133,15 @@ Run alerts tests with: `promtool test rules alerts/alerts.tests.yml`
 | PROMETHEUS_PORT          | 9000      | Port with metrics server                                                    |
 | HEALTHCHECK_SERVER_HOST  | 0.0.0.0   | Address the health check server listens on. Must accept loopback connections |
 | HEALTHCHECK_SERVER_PORT  | 9010      | Port with bot`s status server                                               |
+| WEB3_RPC_ENDPOINTS_FILE  | -         | Path to a file with the value of `WEB3_RPC_ENDPOINTS` (one of the two is required). Takes priority over the env variable |
+| WALLET_PRIVATE_KEY_FILE  | -         | Path to a file with the value of `WALLET_PRIVATE_KEY`. Takes priority over the env variable. An empty file means no key: dry mode |
+
+### Secrets from files
+
+`WEB3_RPC_ENDPOINTS` and `WALLET_PRIVATE_KEY` can be read from files instead of the env: set `<NAME>_FILE` to the path, one secret per file.
+This is how secrets mounted by a container platform are picked up without a shell wrapper.
+Trailing whitespace of the file is ignored. A path that cannot be read stops the bot at startup.
+The files are read once at startup: to apply a new value, restart the bot.
 
 ## License
 
