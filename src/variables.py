@@ -3,16 +3,18 @@ import os
 from eth_account import Account
 from logmask import masked_config
 from utils.build_info import load_build_info
+from utils.env import from_file_or_env
 
-WALLET_PRIVATE_KEY = os.getenv('WALLET_PRIVATE_KEY', None)
+WALLET_PRIVATE_KEY = from_file_or_env('WALLET_PRIVATE_KEY')
 
-# Without the key the bot runs in dry mode: it checks the distribution state and logs, but does not send transactions.
+# Without the key (unset variable or empty file) the bot runs in dry mode: it checks the distribution state and logs,
+# but does not send transactions.
 ACCOUNT = Account.from_key(WALLET_PRIVATE_KEY) if WALLET_PRIVATE_KEY else None
 
 NODE_OPERATOR_REGISTRY_ADDRESSES = os.environ['NODE_OPERATOR_REGISTRY_ADDRESSES'].split(',')
 STETH_ADDRESS = os.environ['STETH_ADDRESS']
 
-WEB3_RPC_ENDPOINTS = os.environ['WEB3_RPC_ENDPOINTS'].split(',')
+WEB3_RPC_ENDPOINTS = from_file_or_env('WEB3_RPC_ENDPOINTS', required=True).split(',')
 
 PROMETHEUS_PORT = int(os.getenv('PROMETHEUS_PORT', 9000))
 # All interfaces by default, so that the health check is reachable from outside the container (Kubernetes probes).
@@ -33,6 +35,9 @@ PUBLIC_ENV_VARS = {
     'BLOCKS_BETWEEN_EXECUTION': BLOCKS_BETWEEN_EXECUTION,
     'MIN_SHARES_TO_DISTRIBUTE': MIN_SHARES_TO_DISTRIBUTE,
     'ACCOUNT': '' if ACCOUNT is None else ACCOUNT.address,
+    # The paths show which source the secrets came from; the values themselves stay in PRIVATE_ENV_VARS.
+    'WALLET_PRIVATE_KEY_FILE': os.getenv('WALLET_PRIVATE_KEY_FILE', ''),
+    'WEB3_RPC_ENDPOINTS_FILE': os.getenv('WEB3_RPC_ENDPOINTS_FILE', ''),
 }
 
 PRIVATE_ENV_VARS = {
