@@ -39,6 +39,16 @@ To run bot
 poetry run python src/main.py
 ```
 
+To build the Docker image
+
+```bash
+docker login dhi.io
+docker build -t nor-reward-distribution-bot .
+```
+
+The base images are Docker Hardened Images from `dhi.io`. The registry does not allow anonymous pulls, so log in with a Docker account first.
+The final image has no shell and no `apt`.
+
 ### Tests
 
 #### Run unit tests
