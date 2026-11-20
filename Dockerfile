@@ -43,8 +43,6 @@ ENV HEALTHCHECK_SERVER_HOST=0.0.0.0
 ENV HEALTHCHECK_SERVER_PORT=9010
 
 EXPOSE $PROMETHEUS_PORT $HEALTHCHECK_SERVER_PORT
-# www-data in Debian. The runtime image has no passwd entry for it, so the ids are numeric.
-USER 33:33
 
 HEALTHCHECK --interval=10s --timeout=3s \
     CMD ["python3", "src/healthcheck.py"]
